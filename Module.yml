@@ -16,17 +16,17 @@ Variables:
       Type: AWS::S3::Bucket
       Allow: ReadWrite
 
-  - Var: AnythingGoesForApiKeyHolders
+  - Var: CustomerUsagePlan
     Description: Limit usage for REST API
     Resource:
       Type: AWS::ApiGateway::UsagePlan
       Properties:
-        UsagePlanName: AnythingGoesForApiKeyHolders
+        UsagePlanName: CustomerUsagePlan
         ApiStages:
           - ApiId: !Ref Module::RestApi
-            Stage: LATEST
+            Stage: !Ref Module::RestApiStage
         Quota:
-          Limit: 1000
+          Limit: 100000
           Period: MONTH
 
   - Var: ApiKey
@@ -37,9 +37,18 @@ Variables:
         Description: ApiKey for file uploader
         Enabled: true
 
+#  - Var: AddApiKey
+#    Description: Add to usage plan
+#    Resource:
+#      Type: AWS::ApiGateway::UsagePlanKey
+#      Properties:
+#        KeyId: !Ref Module::RestApi
+#        KeyType: API_KEY
+#        UsagePlanId: !Ref CustomerUsagePlan # this is bad!
+
 Functions:
   - Function: GatewayToS3Function
-    Description: Uploads a file from API Gateway to S3
+    Description: Puts a file to S3 from an Api Gateway request
     Memory: 256
     Timeout: 60
     Sources:
