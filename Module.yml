@@ -1,0 +1,47 @@
+# The Module Name is used as prefix for all contained resources.
+Module: SecureFileUploadGateway
+
+# The Module Version is shown in the CloudFormation stack and Lambda function descriptions.
+Version: 1.3
+
+# The Module Description is shown in the AWS CloudFormation console with the version number.
+Description: Defines functions to assist in secure file uploads
+
+# The Variables section defines values and resources for the module.
+Variables:
+  - Var: SecureFileUploadGatewayBucket
+    Scope: "*"
+    Description: Default bucket of file uploads from api gateway
+    Resource:
+      Type: AWS::S3::Bucket
+      Allow: ReadWrite
+
+  - Var: AnythingGoesForApiKeyHolders
+    Description: Limit usage for REST API
+    Resource:
+      Type: AWS::ApiGateway::UsagePlan
+      Properties:
+        UsagePlanName: AnythingGoesForApiKeyHolders
+        ApiStages:
+          - ApiId: !Ref Module::RestApi
+            Stage: LATEST
+        Quota:
+          Limit: 1000
+          Period: MONTH
+
+  - Var: ApiKey
+    Description: Limit access
+    Resource:
+      Type: AWS::ApiGateway::ApiKey
+      Properties:
+        Description: ApiKey for file uploader
+        Enabled: true
+
+Functions:
+  - Function: GatewayToS3Function
+    Description: Uploads a file from API Gateway to S3
+    Memory: 256
+    Timeout: 60
+    Sources:
+      - Api: POST:/FileUpload
+        ApiKeyRequired: true
