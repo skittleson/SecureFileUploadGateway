@@ -1,94 +1,111 @@
 SF:C:\Dev\SecureFileUploadGateway\GatewayToS3Function\Function.cs
-FN:14,MindTouch.LambdaSharp.LambdaConfig SecureFileUploadGateway.GatewayToS3Function.Function::get__config()
+FN:15,MindTouch.LambdaSharp.LambdaConfig SecureFileUploadGateway.GatewayToS3Function.Function::get__config()
 FNDA:22,MindTouch.LambdaSharp.LambdaConfig SecureFileUploadGateway.GatewayToS3Function.Function::get__config()
-DA:15,22
-FN:25,System.Threading.Tasks.Task SecureFileUploadGateway.GatewayToS3Function.Function::InitializeAsync(MindTouch.LambdaSharp.LambdaConfig)
+DA:16,22
+FN:26,System.Threading.Tasks.Task SecureFileUploadGateway.GatewayToS3Function.Function::InitializeAsync(MindTouch.LambdaSharp.LambdaConfig)
 FNDA:8,System.Threading.Tasks.Task SecureFileUploadGateway.GatewayToS3Function.Function::InitializeAsync(MindTouch.LambdaSharp.LambdaConfig)
-DA:26,8
 DA:27,8
 DA:28,8
-DA:29,9
-DA:30,1
-DA:32,7
+DA:29,8
+DA:30,9
+DA:31,1
 DA:33,7
-BRDA:28,17,0,0
-BRDA:28,17,1,8
-BRDA:29,41,0,1
-BRDA:29,41,1,7
-FN:65,System.ValueTuple`3<System.String,System.Boolean,System.String> SecureFileUploadGateway.GatewayToS3Function.Function::BucketKeyFormat(System.String,System.String)
+DA:34,7
+BRDA:29,17,0,0
+BRDA:29,17,1,8
+BRDA:30,41,0,1
+BRDA:30,41,1,7
+FN:68,System.ValueTuple`3<System.String,System.Boolean,System.String> SecureFileUploadGateway.GatewayToS3Function.Function::BucketKeyFormat(System.String,System.String)
 FNDA:4,System.ValueTuple`3<System.String,System.Boolean,System.String> SecureFileUploadGateway.GatewayToS3Function.Function::BucketKeyFormat(System.String,System.String)
-DA:66,4
-DA:67,4
-DA:68,4
-DA:69,5
-DA:70,1
-DA:73,3
-DA:74,4
-BRDA:67,7,0,3
-BRDA:67,7,1,1
-BRDA:69,33,0,1
-BRDA:69,33,1,3
-FN:75,Amazon.Lambda.APIGatewayEvents.APIGatewayProxyResponse SecureFileUploadGateway.GatewayToS3Function.Function::GatewayProxyResponse(System.Object,System.Int32)
+DA:69,4
+DA:70,4
+DA:71,4
+DA:72,5
+DA:73,1
+DA:75,3
+DA:76,4
+BRDA:70,7,0,3
+BRDA:70,7,1,1
+BRDA:72,33,0,1
+BRDA:72,33,1,3
+FN:77,Amazon.Lambda.APIGatewayEvents.APIGatewayProxyResponse SecureFileUploadGateway.GatewayToS3Function.Function::GatewayProxyResponse(System.Object,System.Int32)
 FNDA:5,Amazon.Lambda.APIGatewayEvents.APIGatewayProxyResponse SecureFileUploadGateway.GatewayToS3Function.Function::GatewayProxyResponse(System.Object,System.Int32)
-DA:76,5
-DA:77,5
 DA:78,5
 DA:79,5
 DA:80,5
 DA:81,5
 DA:82,5
-FN:17,System.Void SecureFileUploadGateway.GatewayToS3Function.Function::.ctor(MindTouch.LambdaSharp.LambdaFunctionConfiguration,Amazon.S3.IAmazonS3)
+DA:83,5
+DA:84,5
+FN:85,System.Void SecureFileUploadGateway.GatewayToS3Function.Function::LogDictionary(System.String,System.Collections.Generic.IDictionary`2<System.String,System.String>)
+FNDA:0,System.Void SecureFileUploadGateway.GatewayToS3Function.Function::LogDictionary(System.String,System.Collections.Generic.IDictionary`2<System.String,System.String>)
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:92,0
+BRDA:87,7,0,0
+BRDA:88,98,1,0
+BRDA:88,98,0,0
+BRDA:87,7,1,0
+FN:18,System.Void SecureFileUploadGateway.GatewayToS3Function.Function::.ctor(MindTouch.LambdaSharp.LambdaFunctionConfiguration,Amazon.S3.IAmazonS3)
 FNDA:14,System.Void SecureFileUploadGateway.GatewayToS3Function.Function::.ctor(MindTouch.LambdaSharp.LambdaFunctionConfiguration,Amazon.S3.IAmazonS3)
-DA:18,14
-DA:19,7
+DA:19,14
 DA:20,7
-FN:22,System.Void SecureFileUploadGateway.GatewayToS3Function.Function::.ctor()
+DA:21,7
+FN:23,System.Void SecureFileUploadGateway.GatewayToS3Function.Function::.ctor()
 FNDA:1,System.Void SecureFileUploadGateway.GatewayToS3Function.Function::.ctor()
-DA:23,1
-FN:34,System.Void SecureFileUploadGateway.GatewayToS3Function.Function/<ProcessMessageAsync>d__8::MoveNext()
+DA:24,1
+FN:35,System.Void SecureFileUploadGateway.GatewayToS3Function.Function/<ProcessMessageAsync>d__8::MoveNext()
 FNDA:6,System.Void SecureFileUploadGateway.GatewayToS3Function.Function/<ProcessMessageAsync>d__8::MoveNext()
-DA:35,6
 DA:36,6
-DA:37,7
-DA:38,1
-DA:40,5
+DA:37,6
+DA:38,7
+DA:39,1
 DA:41,5
-DA:42,7
-DA:43,3
-DA:44,1
-DA:46,1
+DA:42,5
+DA:43,7
+DA:44,3
+DA:45,1
 DA:47,1
-DA:48,4
-DA:49,4
+DA:48,1
+DA:49,1
 DA:50,4
-DA:51,5
-DA:52,1
-DA:54,3
-DA:55,3
+DA:51,4
+DA:52,4
+DA:53,5
+DA:54,1
 DA:56,3
-DA:57,3
-DA:58,3
+DA:57,2
+DA:58,2
 DA:59,2
 DA:60,2
 DA:61,2
 DA:62,2
 DA:63,2
-DA:64,5
-BRDA:37,67,0,1
-BRDA:37,67,1,5
-BRDA:41,148,0,2
-BRDA:41,148,1,3
-BRDA:41,182,0,2
-BRDA:43,200,0,1
-BRDA:43,200,1,1
-BRDA:41,182,1,4
-BRDA:51,375,0,1
-BRDA:51,375,1,3
-BRDA:54,510,1,2
-LF:53
-LH:53
-BRF:19
-BRH:18
-FNF:7
+DA:64,2
+DA:65,2
+DA:66,2
+DA:67,5
+BRDA:38,67,0,1
+BRDA:38,67,1,5
+BRDA:42,148,0,2
+BRDA:42,148,1,3
+BRDA:42,182,0,2
+BRDA:44,200,0,1
+BRDA:44,200,1,1
+BRDA:42,182,1,4
+BRDA:53,408,0,1
+BRDA:53,408,1,3
+BRDA:56,456,0,2
+BRDA:56,456,1,1
+BRDA:57,591,1,2
+LF:62
+LH:55
+BRF:25
+BRH:20
+FNF:8
 FNH:7
 end_of_record

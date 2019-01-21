@@ -110,6 +110,7 @@ namespace SecureFileUpload.Tests {
             var instance = await MockLambdaFunctionInstance();
             var task = instance.ProcessMessageAsync(new APIGatewayProxyRequest {
                 Body = "this is test !",
+                IsBase64Encoded = true,
                 QueryStringParameters = new Dictionary<string, string>() {
                                          {"fileName","test.jpg" }
                                 }

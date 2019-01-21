@@ -1,30 +1,23 @@
 # Secure File Upload Gateway
 
-A repeatable AWS serverless file uploader via api gateway. Built with the LambdaSharpTool: https://github.com/LambdaSharp/LambdaSharpTool .   A curl command to submit data in base64.
+A repeatable AWS serverless file uploader via api gateway. Built with the LambdaSharpTool.
 
 Example:
-`(openssl base64 < sample.jpg) | curl -H 'x-api-key:KEY' --data @- https://DOMAIN.amazonaws.com/LATEST/FileUpload?fileName=sample.jpg`
+`curl -H 'x-api-key:KEY' -H "Content-Type:application/octet-stream" --data-binary "@sample.jpg" https://SUBDOMAIN.execute-api.us-east-1.amazonaws.com/LATEST/FileUpload?fileName=sample.jpg`
 
-```
---data-binary <data>
-  (HTTP) This posts data exactly as specified with no extra processing whatsoever.
-  If you start the data with the letter @, the rest should be a filename.  Data is
-  posted in a similar manner as --data-ascii does, except that newlines are preserved
-  and conversions are never done.
+## How to Use
 
-  If this option is used several times, the ones following the first will append data
-  as described in -d, --data.
-```
-
-## Setup
+- Setup the LambdaSharp tool: https://github.com/LambdaSharp/LambdaSharpTool
 - Deploy to your tier `dotnet lash deploy --tier Sandbox`
-- Grab the API key: `Amazon API Gateway > API Keys> Sandb-ApiKe-*`
-
-
+- Grab the API key: `Amazon API Gateway > API Keys > Sandb-ApiKe-*`
+- Assign api keys to usage plans.
+- Enable binary support: Amazon API Gateway `APIs > Sandbox-SecureFileUploadGateway Module API > Settings`
+  - Binary Media Types: `application/octet-stream`
+  - Re-Deploy API: `Resources > Deploy API`. Select `LATEST`.
 
 ## Code Coverage
+
 VS Code Extension: https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters
 Coverlet: https://github.com/tonerdo/coverlet
 
 `make test`
-

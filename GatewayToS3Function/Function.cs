@@ -6,6 +6,7 @@ using MindTouch.LambdaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -38,8 +39,6 @@ namespace SecureFileUploadGateway.GatewayToS3Function {
                 return GatewayProxyResponse(new { Message = "An incorrect bucket arn" });
             }
             var bucketName = configBucketName.Split(":::")[1];
-            LogInfo(SerializeJson(message.QueryStringParameters));
-            //LogDictionary("QueryStringParameters",  message.QueryStringParameters);
             if (message.QueryStringParameters.ContainsKey("bucket")
                 && message.QueryStringParameters.TryGetValue("bucket", out string requestBucketName)) {
                 if (string.IsNullOrEmpty(requestBucketName)) {
@@ -54,10 +53,11 @@ namespace SecureFileUploadGateway.GatewayToS3Function {
             if (!isValidKey) {
                 return GatewayProxyResponse(new { Message = errorMessage });
             }
+            var body = message.IsBase64Encoded ? Convert.FromBase64String(message.Body) : Encoding.ASCII.GetBytes(message.Body);
             var result = await _s3Client.PutObjectAsync(new PutObjectRequest {
                 BucketName = bucketName,
                 Key = key,
-                InputStream = new MemoryStream(Convert.FromBase64String(message.Body)),
+                InputStream = new MemoryStream(body)
             });
             return GatewayProxyResponse(new {
                 Bucket = bucketName,
@@ -84,8 +84,8 @@ namespace SecureFileUploadGateway.GatewayToS3Function {
         }
 
         private void LogDictionary(string prefix, IDictionary<string, string> keyValues) {
-            if(keyValues != null) {
-                foreach(var keyValue in keyValues) {
+            if (keyValues != null) {
+                foreach (var keyValue in keyValues) {
                     LogInfo($"{prefix}.{keyValue.Key} = {keyValue.Value}");
                 }
             }
