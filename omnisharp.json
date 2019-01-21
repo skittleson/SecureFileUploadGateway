@@ -17,8 +17,8 @@
     "NewLineForMembersInAnonymousTypes": false,
     "WrappingPreserveSingleLine": true,
     "WrappingKeepStatementsOnSingleLine": true,
-    "UseTabs": true,
-    "TabSize": 2,
+    "UseTabs": false,
+    "SpaceSize": 2,
     "SpaceAfterCast": false
   }
 }
