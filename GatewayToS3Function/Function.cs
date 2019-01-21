@@ -33,38 +33,62 @@ namespace SecureFileUploadGateway.GatewayToS3Function {
         }
 
         public override async Task<APIGatewayProxyResponse> ProcessMessageAsync(APIGatewayProxyRequest message, ILambdaContext context) {
-            var response = new APIGatewayProxyResponse {
-                Body = SerializeJson(new { Message = "Unknown Error" }),
-                Headers = new Dictionary<string, string> { ["Content-Type"] = "text/json" },
-                StatusCode = 500
-            };
-            var bucketName = _config.ReadText("SecureFileUploadGatewayBucket");
-            if (!bucketName.Contains(":::")) {
-                response.Body = SerializeJson(new { Message = "An incorrect bucket arn" });
-                return response;
+            var configBucketName = _config.ReadText("SecureFileUploadGatewayBucket");
+            if (!configBucketName.Contains(":::")) {
+                return GatewayProxyResponse(new { Message = "An incorrect bucket arn" });
             }
-            bucketName = bucketName.Split(":::")[1];
-            message.QueryStringParameters.TryGetValue("fileName", out string s3Key);
-            if (String.IsNullOrEmpty(s3Key)) {
-                response.Body = SerializeJson(new {
-                    Message = "Missing query parameter: fileName",
-                });
-                return response;
+            var bucketName = configBucketName.Split(":::")[1];
+            LogInfo(SerializeJson(message.QueryStringParameters));
+            //LogDictionary("QueryStringParameters",  message.QueryStringParameters);
+            if (message.QueryStringParameters.ContainsKey("bucket")
+                && message.QueryStringParameters.TryGetValue("bucket", out string requestBucketName)) {
+                if (string.IsNullOrEmpty(requestBucketName)) {
+                    return GatewayProxyResponse(new { Message = "Request bucket name is empty. Remove query parameter for default bucket." });
+                }
+                LogInfo($"Different bucket requested: {bucketName}");
+                bucketName = requestBucketName;
             }
-            //message.QueryStringParameters.TryGetValue("path", out string path);
-            var s3Request = new PutObjectRequest {
+            message.QueryStringParameters.TryGetValue("fileName", out string fileName);
+            message.QueryStringParameters.TryGetValue("path", out string path);
+            var (key, isValidKey, errorMessage) = BucketKeyFormat(fileName, path);
+            if (!isValidKey) {
+                return GatewayProxyResponse(new { Message = errorMessage });
+            }
+            var result = await _s3Client.PutObjectAsync(new PutObjectRequest {
                 BucketName = bucketName,
-                Key = s3Key,
+                Key = key,
                 InputStream = new MemoryStream(Convert.FromBase64String(message.Body)),
-            };
-            var result = await _s3Client.PutObjectAsync(s3Request);
-            response.StatusCode = (int)result.HttpStatusCode;
-            response.Body = SerializeJson(new {
-                Bucket = bucketName,
-                Key = s3Key,
-                Message = "Upload succeed!"
             });
-            return response;
+            return GatewayProxyResponse(new {
+                Bucket = bucketName,
+                Key = key,
+                Message = ""
+            }, (int)result.HttpStatusCode);
+        }
+
+        public static (string key, bool isValidKey, string message) BucketKeyFormat(string fileName, string path) {
+            var isValid = !string.IsNullOrEmpty(fileName) &&
+              fileName.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+            if (!isValid) {
+                return ("", false, "Missing query parameter: fileName");
+            }
+            return (fileName, true, "");
+        }
+
+        public APIGatewayProxyResponse GatewayProxyResponse(Object response, int statusCode = 500) {
+            return new APIGatewayProxyResponse {
+                Body = SerializeJson(response),
+                Headers = new Dictionary<string, string> { ["Content-Type"] = "text/json" },
+                StatusCode = statusCode
+            };
+        }
+
+        private void LogDictionary(string prefix, IDictionary<string, string> keyValues) {
+            if(keyValues != null) {
+                foreach(var keyValue in keyValues) {
+                    LogInfo($"{prefix}.{keyValue.Key} = {keyValue.Value}");
+                }
+            }
         }
     }
 }

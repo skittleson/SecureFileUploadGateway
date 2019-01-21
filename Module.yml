@@ -5,7 +5,7 @@ Module: SecureFileUploadGateway
 Version: 1.3
 
 # The Module Description is shown in the AWS CloudFormation console with the version number.
-Description: Defines functions to assist in secure file uploads
+Description: Resources allocated for secure file uploads to s3 from api gateway
 
 # The Variables section defines values and resources for the module.
 Variables:
@@ -29,8 +29,9 @@ Variables:
           Limit: 100000
           Period: MONTH
 
-  - Var: ApiKey
-    Description: Limit access
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-apikey.html
+  - Var: Customer01ApiKey
+    Description: Limit access for customer01
     Resource:
       Type: AWS::ApiGateway::ApiKey
       Properties:
@@ -44,7 +45,7 @@ Variables:
 #      Properties:
 #        KeyId: !Ref Module::RestApi
 #        KeyType: API_KEY
-#        UsagePlanId: !Ref CustomerUsagePlan # this is bad!
+#        UsagePlanId: !Ref CustomerUsagePlan # 0.5 fixes this
 
 Functions:
   - Function: GatewayToS3Function
@@ -54,3 +55,6 @@ Functions:
     Sources:
       - Api: POST:/FileUpload
         ApiKeyRequired: true
+        OperationName: Endpoint for file uploads
+        # Integration: #https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apitgateway-method-integration.html
+        #  ContentHandling: CONVERT_TO_BINARY

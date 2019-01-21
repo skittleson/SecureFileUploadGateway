@@ -2,7 +2,6 @@
 
 A repeatable AWS serverless file uploader via api gateway. Built with the LambdaSharpTool: https://github.com/LambdaSharp/LambdaSharpTool .   A curl command to submit data in base64.
 
-
 Example:
 `(openssl base64 < sample.jpg) | curl -H 'x-api-key:KEY' --data @- https://DOMAIN.amazonaws.com/LATEST/FileUpload?fileName=sample.jpg`
 
@@ -16,6 +15,11 @@ Example:
   If this option is used several times, the ones following the first will append data
   as described in -d, --data.
 ```
+
+## Setup
+- Deploy to your tier `dotnet lash deploy --tier Sandbox`
+- Grab the API key: `Amazon API Gateway > API Keys> Sandb-ApiKe-*`
+
 
 
 ## Code Coverage
