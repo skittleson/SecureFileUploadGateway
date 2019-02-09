@@ -13,9 +13,16 @@ using System.Threading.Tasks;
 namespace SecureFileUploadGateway.GatewayToS3Function {
 
     public class ProcessData {
+        private LambdaConfig config;
+        private AmazonS3Client amazonS3Client;
 
-        public async Task<APIGatewayProxyResponse> Save(APIGatewayProxyRequest message, LambdaConfig _config, IAmazonS3 _s3Client) {
-            var configBucketName = _config.ReadText("SecureFileUploadGatewayBucket");
+        public ProcessData(LambdaConfig config, AmazonS3Client amazonS3Client) {
+            this.config = config;
+            this.amazonS3Client = amazonS3Client;
+        }
+
+        public async Task<APIGatewayProxyResponse> Save(APIGatewayProxyRequest message) {
+            var configBucketName = config.ReadText("SecureFileUploadGatewayBucket");
             if (!configBucketName.Contains(":::")) {
                 return GatewayProxyResponse(new { Message = "An incorrect bucket arn" });
             }
@@ -35,7 +42,7 @@ namespace SecureFileUploadGateway.GatewayToS3Function {
                 return GatewayProxyResponse(new { Message = errorMessage });
             }
             var body = message.IsBase64Encoded ? Convert.FromBase64String(message.Body) : Encoding.ASCII.GetBytes(message.Body);
-            var result = await _s3Client.PutObjectAsync(new PutObjectRequest {
+            var result = await amazonS3Client.PutObjectAsync(new PutObjectRequest {
                 BucketName = bucketName,
                 Key = key,
                 InputStream = new MemoryStream(body)
